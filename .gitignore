@@ -6,3 +6,5 @@ dist
 *.zip
 *.htm
 .project
+**/.idea/workspace.xml
+**/.idea/tasks.xml
