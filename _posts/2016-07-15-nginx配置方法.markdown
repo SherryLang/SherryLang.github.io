@@ -1,200 +1,106 @@
 ---
 layout:     post
 title:      "nginx配置方法"
-subtitle:   "在Mac OS X 上编译安装nginx, 对于前后端联调很必要"
+subtitle:   "在Mac OS X 上编译安装nginx，这也是实习中联调用到的第一个工具，值得mark一下"
 date:       2016-07-15 10:00:00
 author:     "Lang Yicong"
 header-img: "img/coffee-01.jpg"
 ---
+<blockquote>Nginx是一款面向性能设计的HTTP服务器，相较于Apache、lighttpd具有占有内存少，稳定性高等优势。</blockquote>
+<h3>
+    <strong>1. 安装PCRE库</strong>
+</h3>
+<p>
+    可以在<a href="http://www.pcre.org/" target="_blank">这里</a>下载最新版
+</p>
+<code>
+    cd ~/Download
+</code>
+<p>双击下载的压缩包解压缩，进入相应的文件夹</p>
+<code>cd pcre-x.xx<br/>
+    sudo ./configure --prefix=/usr/local<br/>
+    sudo make<br/>
+    sudo make install
+</code>
 
 <h3>
-    <span style="font-family:微软雅黑, Microsoft YaHei"><strong style="font-size: 14px;">1. 先安装PCRE库</strong></span>
+    <strong>2.下载安装nginx</strong>
 </h3>
-<div>
-    <span style="font-size:12px"><span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;"><span id="_baidu_bookmark_start_15" style="display: none; line-height: 0px;">‍</span></span><span id="_baidu_bookmark_start_17" style="display: none; line-height: 0px;">‍</span>可以在<a href="http://www.pcre.org/" target="_blank">这里</a>下载最新版&nbsp;</span>
-</div>
 <p>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">cd ~/Download</span>
+    首先在<a href="http://nginx.org/" target="_blank">nginx官网</a>下载最新的源码
 </p>
-<div>
-    <span style="font-size:12px"><span style="font-family:微软雅黑, Microsoft YaHei"><span id="_baidu_bookmark_start_19" style="display: none; line-height: 0px;">‍</span></span><span id="_baidu_bookmark_start_21" style="display: none; line-height: 0px;">‍</span>双击下载的压缩包解压缩，进入相应的文件夹</span>
-</div>
-<p>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">cd pcre-x.xx</span>
-</p>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo ./configure --prefix=/usr/local</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo make</span>
-</div>
-<p>
-    <span id="_baidu_bookmark_end_18" style="display: none; line-height: 0px;">‍</span><span id="_baidu_bookmark_end_16" style="display: none; line-height: 0px;">‍</span><span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">sudo make install</span><span id="_baidu_bookmark_end_22" style="display: none; line-height: 0px;">‍</span><span style="font-size: 14px; font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;"><span id="_baidu_bookmark_end_20" style="display: none; line-height: 0px;">‍</span></span>
-</p>
-<p style="font-size: 14px;">
-    <span style="font-family:微软雅黑, Microsoft YaHei"><br/></span>
-</p>
-<h3 style="font-size: 14px;">
-    <strong><span style="font-family:微软雅黑, Microsoft YaHei">2. 下载安装nginx</span></strong>
+<p>双击解压缩后，进入目录，配置环境，编译安装: </p>
+<code>cd nginx-1.x.x<br/>
+    sudo ./configure --prefix=/usr/local --with-http_ssl_module --with-ld-opt="-L /usr/local/lib"<br/>
+    sudo make<br/>
+    sudo make install
+</code>
+
+<h3>
+    <strong>3.启动Nginx</strong>
 </h3>
-<div>
-    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">首先在<a href="http://nginx.org/" target="_blank">nginx官网</a>下载最新的源码</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">双击解压缩后，进入目录</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">cd nginx-1.x.x&nbsp;</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo ./configure --prefix=/usr/local --with-http_ssl_module --with-ld-opt=&quot;-L /usr/local/lib&quot;</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo make</span>
-</div>
-<p>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo make install</span>
-</p>
-<p style="font-size: 14px;">
-    <span style="font-family:微软雅黑, Microsoft YaHei"><br/></span>
-</p>
-<h3 style="font-size: 14px;">
-    <strong><span style="font-family:微软雅黑, Microsoft YaHei">3. 启动Nginx</span></strong>
+<p>检查PATH环境变量</p>
+<code># ~/.bash_profile export PATH=/usr/local/bin:/usr/local/sbin:$PATH<br/>
+cd /usr/local/sbin<br/>
+sudo ./nginx<br/>
+</code>
+<p>如果出现错误：</p>
+<code class="error-code">
+    nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)<br/>
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)<br/>
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)<br/>
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)<br/>
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)<br/>
+nginx: [emerg] still could not bind()
+</code>
+
+<p>运行：</p>
+<code>sudo killall nginx</code>
+<p>来强制停止Nginx，如果不能起作用，就尝试下面的命令（stackoverflow查到的，这个问题搞了半天才解决）</p>
+<code>pkill -9 nginx</code>
+
+<p>最后访问<a href="http://localhost" target="_blank">http://localhost</a>，可以看到如下画面，则说明nginx启动成功：</p>
+<img src="{{ site.baseurl }}/img/posts/nginx1.png"  alt="welcome to nginx">
+
+<p>需要停止Nginx的时候运行</p>
+<code>sudo nginx -s stop</code>
+
+<h3>
+    <strong>4.配置和重新启动</strong>
 </h3>
-<div>
-    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">检查PATH环境变量</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px"># ~/.bash_profile export PATH=/usr/local/bin:/usr/local/sbin:$PATH</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">cd /usr/local/sbin</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo ./nginx</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">如果出现错误：</span>
-</div>
-<div>
-    <div style="padding: 5px; border: 0px; max-height: 600px; overflow: auto; color: rgb(36, 39, 41); background-color: rgb(239, 240, 241);">
-        <code style="padding: 0px; border: 0px;"><span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">nginx:&nbsp;[emerg]&nbsp;bind()&nbsp;to&nbsp;0.0.0.0:80&nbsp;failed&nbsp;(48:&nbsp;Address&nbsp;already&nbsp;in&nbsp;use)<br/>nginx:&nbsp;[emerg]&nbsp;bind()&nbsp;to&nbsp;0.0.0.0:80&nbsp;failed&nbsp;(48:&nbsp;Address&nbsp;already&nbsp;in&nbsp;use)<br/>nginx:&nbsp;[emerg]&nbsp;bind()&nbsp;to&nbsp;0.0.0.0:80&nbsp;failed&nbsp;(48:&nbsp;Address&nbsp;already&nbsp;in&nbsp;use)<br/>nginx:&nbsp;[emerg]&nbsp;bind()&nbsp;to&nbsp;0.0.0.0:80&nbsp;failed&nbsp;(48:&nbsp;Address&nbsp;already&nbsp;in&nbsp;use)<br/>nginx:&nbsp;[emerg]&nbsp;bind()&nbsp;to&nbsp;0.0.0.0:80&nbsp;failed&nbsp;(48:&nbsp;Address&nbsp;already&nbsp;in&nbsp;use)<br/>nginx:&nbsp;[emerg]&nbsp;still&nbsp;could&nbsp;not&nbsp;bind()</span></code>
-    </div>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">运行：</span>
-    <div style="padding: 5px; border: 0px; max-height: 600px; overflow: auto; background-color: rgb(239, 240, 241);">
-        <span style="color: rgb(4, 51, 255);"><code style="padding: 0px; border: 0px;"><span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo&nbsp;killall&nbsp;nginx</span></code></span>
-    </div>
-</div>
-<div>
-    <span style="white-space: normal;font-family:微软雅黑, Microsoft YaHeifont-size:12px">强制停止Nginx：</span>
-</div>
-<div>
-    <span style="white-space: normal; color: rgb(0, 0, 255);font-family:微软雅黑, Microsoft YaHeifont-size:12px">pkill -9 nginx</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">访问http://localhost</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">需要停止Nginx的时候运行</span>
-</div>
-<p>
-    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">sudo nginx -s stop</span>
-</p>
-<p style="font-size: 14px;">
-    <span style="font-family:微软雅黑, Microsoft YaHei"><br/></span>
-</p>
-<h3 style="font-size: 14px;">
-    <strong><span style="font-family:微软雅黑, Microsoft YaHei">4. 配置和重新启动(用mac终端！不要用iterm)</span></strong>
-</h3>
-<div>
-    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">sudo修改config文件</span>
-</div>
-<div>
-    <strong><span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">vim&nbsp;/usr/local/conf/nginx.conf</span></strong>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">加入include语句，方便修改server（http模块内）</span>
-</div>
-<div>
-    <strong><span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&quot;include /Users/sherry/nginx/nginx.conf;&quot;</span></strong>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">然后用文本编辑器修改配置文件模块</span>
-</div>
-<div>
-    <strong><span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">sudo open /Users/sherry/nginx/nginx.conf</span></strong>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">server{}块定义了虚拟主机！！参考的server写法</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">server {</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; listen 8081; &nbsp;<span style="color: rgb(4, 51, 255);">#本地访问的端口</span></span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; server_name localhost; &nbsp;<span style="color: rgb(4, 51, 255);">#本地访问需要输入的url</span></span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; location / {</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; &nbsp; &nbsp; root /Users/sherry/getui/git/data-report-management/src;</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(4, 51, 255);">#自动搜寻index.html</span></span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; }</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; &nbsp;<span style="color: rgb(4, 51, 255);">#以上，在浏览器输入localhost:8081即可访问index.html</span></span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; location ^~ /dataReport/ {</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; &nbsp; &nbsp; proxy_set_header Host 192.168.2.159; <span style="color: rgb(4, 51, 255);">#不知道有什么用</span></span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; &nbsp; &nbsp; proxy_pass http://192.168.2.159:8081; <span style="color: rgb(4, 51, 255);">#后端端口</span></span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; }</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">&nbsp; &nbsp; &nbsp;#更多location配置</span>
-</div>
-<p>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">}</span>
-</p>
-<p>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px"><br/></span>
-</p>
-<div>
-    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">重启nginx</span>
-</div>
-<div>
-    <span style="font-stretch: normal; font-variant-ligatures: no-common-ligatures; font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">sudo /usr/local/sbin/nginx -s reload</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">访问：http://localhost:8081&nbsp;</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">即可登录</span>
-</div>
-<div>
-    <span style="font-family:微软雅黑, Microsoft YaHeifont-size:12px">根据后端接口文档，现在浏览器访问：</span>
-</div>
-<div>
-    <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;font-family:微软雅黑, Microsoft YaHeifont-size:12px">http://localhost(主机名):8081(端口号)/dataReport/user/addUser.do</span>
-</div>
-<div>
-    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;font-size:12px">即可得到返回数据&nbsp;</span>
-</div>
-<p style="text-align: center;">
-    <br/>
-</p>
+<p><strong>重要的事情说三遍！用mac终端，不要用iterm！用mac终端，不要用iterm！用mac终端，不要用iterm！</strong></p>
+<p>sudo修改config文件</p>
+
+<code>vim /usr/local/conf/nginx.conf</code>
+<p>http模块内加入include语句，方便修改server</p>
+<code>"include /Users/{yourusername}/nginx/nginx.conf;"</code>
+<p>然后用文本编辑器修改配置文件模块</p>
+<code>sudo open /Users/sherry/nginx/nginx.conf</code>
+
+<p>server{}块定义了虚拟主机，下面是参考的server写法</p>
+<pre>
+server {
+    listen 8081;   <span class="com">#本地访问的端口</span>
+    server_name localhost;  <span class="com">#本地访问需要输入的url</span>
+    location / {
+        root /Users/sherry/getui/git/data-report-management/src;
+        <span class="com">#无需转发，自动搜寻index.html</span>
+    }
+    <span class="com">#通过以上配置，在浏览器输入localhost:8081即可访问index.html</span>
+
+    location ^~ /dataReport/ {  <span class="com">#/dataReport/下的内通过建立虚拟服务器访问</span>
+        proxy_set_header Host 192.168.2.159; <span class="com">#http_host</span>
+        proxy_pass http://192.168.2.159:8081; <span class="com">#后端主机和端口</span>
+    }
+    
+    <span class="com">#更多location配置</span>
+}
+</pre>
+
+<p>s重启nginx</p>
+<code>sudo /usr/local/sbin/nginx -s reload</code>
+<p>访问：<a href="http://localhost:8081">http://localhost:8081</a>
+即可登录<p>
+<p>根据后端接口文档，现在浏览器访问：
+http://localhost(主机名):8081(端口号)/dataReport/user/addUser.do
+即可得到返回数据<p>
